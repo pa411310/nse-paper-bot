@@ -1,0 +1,2 @@
+trade_id,strategy,stock,status,buy_date,buy_price,qty,stop_loss,target,sell_date,sell_price,exit_reason,last_price,pnl,pnl_pct,notes
+1,S3_Channel_Support_Swing,APARINDS.NS,OPEN,2026-11-19,14310.0,3,13504.4,16037.01,,,,14310.0,0.0,0.0,"PE:43,ROE:21%,DE:0.12,Inst:27%"

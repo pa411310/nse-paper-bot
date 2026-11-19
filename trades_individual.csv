@@ -1,0 +1,5 @@
+trade_id,strategy,stock,status,buy_date,buy_price,qty,stop_loss,target,sell_date,sell_price,exit_reason,last_price,pnl,pnl_pct,notes
+1,S3_Channel_Support_Swing,PREMIERPOL.NS,OPEN,2026-11-19,83.74,238,80.7,105.82,,,,83.74,0.0,0.0,TechPure
+2,S3_Channel_Support_Swing,APARINDS.NS,OPEN,2026-11-19,14310.0,1,13504.4,16037.01,,,,14310.0,0.0,0.0,TechPure
+3,S3_Channel_Support_Swing,AZAD.NS,OPEN,2026-11-19,2376.2,8,2221.27,2637.36,,,,2376.2,0.0,0.0,TechPure
+4,S4_20EMA_Momentum_Pullback,PDMJEPAPER.NS,OPEN,2026-11-19,92.41,216,86.87,109.04,,,,92.41,0.0,0.0,TechPure
