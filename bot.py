@@ -11,17 +11,10 @@ from datetime import datetime, timedelta, timezone
 warnings.filterwarnings("ignore")
 
 # ================= CONFIGURATION =================
-# MODE 1: INDIVIDUAL LAB (Pure Technical Test - 4 Separate Wallets)
-IND_CAPITAL_PER_STRAT = 100000.0
-IND_ALLOC_PER_TRADE = 20000.0
-IND_MAX_OPEN_PER_STRAT = 5
-
-# MODE 2: MASTER SMART BOT (Combined Wallet + Fundamentals + ROC + Regime)
-MASTER_TOTAL_CAPITAL = 400000.0
-MASTER_BASE_ALLOC = 50000.0       # Normal / Bullish allocation per trade
-MASTER_DEFENSIVE_ALLOC = 25000.0  # Reduced allocation when Nifty weak or ROC >= 45
-MASTER_BASE_SLOTS = 8
-MASTER_DEFENSIVE_SLOTS = 4
+# UNLIMITED SLOTS MODE (Every valid setup gets tested)
+IND_ALLOC_PER_TRADE = 20000.0     # Rs. 20,000 per trade in Mode 1 (Individual Lab)
+MASTER_BASE_ALLOC = 50000.0       # Rs. 50,000 per trade in Mode 2 (Normal / Bullish)
+MASTER_DEFENSIVE_ALLOC = 25000.0  # Rs. 25,000 per trade in Mode 2 (Cautious / ROC >= 45)
 MASTER_COOLDOWN_DAYS = 3          # Wait 3 days after SL before re-entering same stock
 
 # SHARED QUALITY & EXIT RULES
@@ -61,7 +54,6 @@ def send_telegram(msg):
 
 
 def get_all_nse_tickers():
-    """Fetches ALL NSE EQ stocks (~2000+) from NSE archives with CSV cache fallback."""
     url = "https://archives.nseindia.com/content/equities/EQUITY_L.csv"
     headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
     try:
@@ -91,10 +83,6 @@ def get_all_nse_tickers():
 
 
 def check_market_regime():
-    """
-    Combines Nifty 50 (50 EMA + Intraday Crash Guard) + Harsh's Monthly 18M ROC.
-    Uses Smart Throttling (50% size) instead of total freeze so trades keep flowing.
-    """
     try:
         daily = yf.download("^NSEI", period="6mo", interval="1d", progress=False, auto_adjust=True)
         if isinstance(daily.columns, pd.MultiIndex):
@@ -113,7 +101,7 @@ def check_market_regime():
             roc_18m = ((c_now - c_18m) / c_18m) * 100
 
         if len(daily) < 55:
-            return True, MASTER_BASE_ALLOC, MASTER_BASE_SLOTS, "NORMAL (Default)"
+            return True, MASTER_BASE_ALLOC, "NORMAL (Default)"
 
         close = float(daily["Close"].iloc[-1])
         prev_close = float(daily["Close"].iloc[-2])
@@ -122,34 +110,52 @@ def check_market_regime():
         roc_txt = f"18M ROC: {roc_18m:.1f}%" if roc_18m is not None else "18M ROC: N/A"
 
         if day_chg <= -2.0:
-            return False, 0.0, 0, f"CRASH PAUSE (Nifty {day_chg:.2f}% today | {roc_txt})"
+            return False, 0.0, f"CRASH PAUSE (Nifty {day_chg:.2f}% today | {roc_txt})"
         if roc_18m is not None and roc_18m >= 45.0:
-            return True, MASTER_DEFENSIVE_ALLOC, MASTER_DEFENSIVE_SLOTS, f"OVERHEATED THROTTLE (50% Size | {roc_txt})"
+            return True, MASTER_DEFENSIVE_ALLOC, f"OVERHEATED THROTTLE (50% Size | {roc_txt})"
         if close < ema50:
-            return True, MASTER_DEFENSIVE_ALLOC, MASTER_DEFENSIVE_SLOTS, f"CAUTIOUS THROTTLE (Nifty < 50 EMA, 50% Size | {roc_txt})"
+            return True, MASTER_DEFENSIVE_ALLOC, f"CAUTIOUS THROTTLE (Nifty < 50 EMA, 50% Size | {roc_txt})"
         if roc_18m is not None and roc_18m <= 5.0:
-            return True, MASTER_BASE_ALLOC, MASTER_BASE_SLOTS, f"BOTTOM ZONE AGGRESSIVE (100% Size | {roc_txt})"
+            return True, MASTER_BASE_ALLOC, f"BOTTOM ZONE AGGRESSIVE (100% Size | {roc_txt})"
 
-        return True, MASTER_BASE_ALLOC, MASTER_BASE_SLOTS, f"BULLISH NORMAL (100% Size | Nifty > 50 EMA | {roc_txt})"
+        return True, MASTER_BASE_ALLOC, f"BULLISH NORMAL (100% Size | Nifty > 50 EMA | {roc_txt})"
     except Exception:
-        return True, MASTER_BASE_ALLOC, MASTER_BASE_SLOTS, "NORMAL (Fallback)"
+        return True, MASTER_BASE_ALLOC, "NORMAL (Fallback)"
 
 
 def check_fundamentals_smart(stock):
     """
-    Runs ONLY on technical shortlisted stocks (~10-25 stocks/run).
-    Hard rejects junk; rewards quality (ROE, PE, D/E, Inst) with priority score.
+    Checks MCap (>= Rs. 1,500 Cr), PE, ROE, Debt/Equity with rate-limit pause
+    and fast_info backup so microcaps cannot sneak through as blank 'Pass'.
     """
+    time.sleep(0.5)
     try:
-        info = yf.Ticker(stock).info or {}
+        t = yf.Ticker(stock)
+        info = {}
+        try:
+            info = t.info or {}
+        except Exception:
+            info = {}
+
         mcap = info.get("marketCap")
+        if mcap is None:
+            try:
+                fi = t.fast_info
+                mcap = fi["marketCap"] if "marketCap" in fi else getattr(fi, "market_cap", None)
+            except Exception:
+                mcap = None
+
+        # Strict MCap gate: must confirm >= Rs. 1,500 Cr
+        if mcap is None:
+            return False, 0.0, "NoMCapData"
+        if mcap < MIN_MCAP_INR:
+            return False, 0.0, f"MCap<{int(mcap/1e7)}Cr"
+
         pe = info.get("trailingPE")
         roe = info.get("returnOnEquity")
         de_raw = info.get("debtToEquity")
         inst = info.get("heldPercentInstitutions")
 
-        if mcap is not None and mcap < MIN_MCAP_INR:
-            return False, 0.0, f"MCap<{int(mcap/1e7)}Cr"
         if pe is not None and (pe <= 0 or pe > 65):
             return False, 0.0, f"PE={pe:.1f}"
 
@@ -163,7 +169,7 @@ def check_fundamentals_smart(stock):
             return False, 0.0, "NegROE"
 
         bonus = 0.0
-        tags = []
+        tags = [f"MC:{int(mcap/1e7)}Cr"]
         if pe is not None and 10 <= pe <= 45:
             bonus += 1.0
             tags.append(f"PE:{pe:.0f}")
@@ -177,9 +183,9 @@ def check_fundamentals_smart(stock):
             bonus += 1.0
             tags.append(f"Inst:{inst*100:.0f}%")
 
-        return True, bonus, ",".join(tags) if tags else "Pass"
+        return True, bonus, ",".join(tags)
     except Exception:
-        return True, 0.0, "API-Skip"
+        return False, 0.0, "API-Error"
 
 
 def load_trades(filepath):
@@ -227,7 +233,6 @@ def compute_indicators(df):
 
 
 def download_batch_data(tickers, batch_size=100):
-    """Downloads 1-year daily OHLCV data in fast parallel batches."""
     all_data = {}
     for i in range(0, len(tickers), batch_size):
         batch = tickers[i:i + batch_size]
@@ -263,7 +268,6 @@ def download_batch_data(tickers, batch_size=100):
 
 
 def manage_open_trades(trades_df, market_data, today_str):
-    """Auto-SELL engine: SL, Target, Harsh 21-EMA 2-red-candle trail, 30-day Time Stop."""
     closed_today = []
     if trades_df.empty:
         return trades_df, closed_today
@@ -340,7 +344,6 @@ def manage_open_trades(trades_df, market_data, today_str):
 
 
 def scan_all_signals(market_data):
-    """Evaluates all 4 strategies across all NSE stocks."""
     candidates = {s: [] for s in STRATEGIES}
 
     for stock, raw_df in market_data.items():
@@ -374,7 +377,7 @@ def scan_all_signals(market_data):
             ema50 = float(latest["EMA_50"])
             ema200 = float(latest["EMA_200"])
 
-            # ---------- S1: Progressive VCP + Prior Impulse + Volume Surge ----------
+            # S1: Progressive VCP + Prior Impulse + Volume Surge
             prior_15 = df.iloc[-16:-1]
             prior_5 = df.iloc[-6:-1]
             prior_60 = df.iloc[-61:-1]
@@ -403,7 +406,7 @@ def scan_all_signals(market_data):
                     "sl": sl, "target": target, "clean": clean_behavior
                 })
 
-            # ---------- S2: MACD + 200 EMA Support Bounce ----------
+            # S2: MACD + 200 EMA Support Bounce
             macd = float(latest["MACD"])
             macdh = float(latest["MACD_HIST"])
             prev_macdh = float(prev["MACD_HIST"])
@@ -425,7 +428,7 @@ def scan_all_signals(market_data):
                         "sl": sl, "target": target, "clean": clean_behavior
                     })
 
-            # ---------- S3: Trend Line Channel Support Swing ----------
+            # S3: Trend Line Channel Support Swing
             high_20 = float(df["High"].tail(20).max())
             channel_width = (high_20 - low_20) / low_20 if low_20 > 0 else 0
             candle_range = high - low
@@ -446,13 +449,14 @@ def scan_all_signals(market_data):
                         "sl": sl, "target": target, "clean": clean_behavior
                     })
 
-            # ---------- S4: 20-EMA Momentum Pullback ----------
+            # S4: 20-EMA Momentum Pullback (With 1.2x avg volume quality filter)
             if (
                 close > ema50 > ema200
                 and low <= ema20 * 1.015
                 and close >= ema20
                 and close > open_p
                 and vol >= float(prev["Volume"])
+                and vol >= 1.2 * vol_30ma
                 and not_overextended
             ):
                 sl = max(low * 0.99, close * 0.94)
@@ -491,7 +495,7 @@ def get_blocked_stocks(trades_df, today_str, cooldown_days, strategy_filter=None
 
 
 def execute_mode1_individual(trades_df, candidates, today_str):
-    """MODE 1: Pure technical testing across 4 independent wallets."""
+    """MODE 1: UNLIMITED trades across all 4 strategies independently."""
     bought = []
     next_id = int(trades_df["trade_id"].max()) + 1 if not trades_df.empty else 1
 
@@ -499,15 +503,9 @@ def execute_mode1_individual(trades_df, candidates, today_str):
         open_df = trades_df[(trades_df["strategy"] == strat) & (trades_df["status"] == "OPEN")]
         open_stocks = set(open_df["stock"].tolist())
         blocked_today = get_blocked_stocks(trades_df, today_str, cooldown_days=0, strategy_filter=strat)
-        slots = IND_MAX_OPEN_PER_STRAT - len(open_df)
-
-        if slots <= 0:
-            continue
 
         ranked = sorted(candidates[strat], key=lambda x: x["score"], reverse=True)
         for item in ranked:
-            if slots <= 0:
-                break
             stock = item["stock"]
             if stock in open_stocks or stock in blocked_today:
                 continue
@@ -526,15 +524,14 @@ def execute_mode1_individual(trades_df, candidates, today_str):
             }
             trades_df = pd.concat([trades_df, pd.DataFrame([new_row])], ignore_index=True)
             open_stocks.add(stock)
-            slots -= 1
             next_id += 1
             bought.append(f"[IND] BUY {stock} ({strat}) @ {item['price']:.2f}")
 
     return trades_df, bought
 
 
-def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt, max_slots):
-    """MODE 2: Unified Smart Bot (No cross-strategy duplicates + Fundamentals + Confluence)."""
+def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt):
+    """MODE 2: UNLIMITED smart buys (No cross-strategy duplicates + Strict Fundamentals + Confluence)."""
     bought = []
     funnel = {"raw_unique": 0, "clean_passed": 0, "fund_passed": 0, "bought": 0}
 
@@ -544,7 +541,6 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
     open_df = trades_df[trades_df["status"] == "OPEN"]
     open_stocks = set(open_df["stock"].tolist())
     cooldown_stocks = get_blocked_stocks(trades_df, today_str, cooldown_days=MASTER_COOLDOWN_DAYS)
-    slots = max_slots - len(open_df)
 
     stock_pool = {}
     for strat in STRATEGIES:
@@ -571,14 +567,14 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
     ]
     funnel["clean_passed"] = len(eligible)
 
-    if slots <= 0 or not eligible:
+    if not eligible:
         return trades_df, bought, funnel
 
     eligible.sort(key=lambda x: (len(x["strategies"]), x["score"]), reverse=True)
-    shortlist = eligible[:25]
 
+    # Check fundamentals on all eligible clean setups (capped at 60/run for GitHub runtime safety)
     fund_approved = []
-    for item in shortlist:
+    for item in eligible[:60]:
         ok, f_bonus, f_tag = check_fundamentals_smart(item["stock"])
         if ok:
             item["final_score"] = item["score"] + f_bonus + (len(item["strategies"]) * 2.0)
@@ -591,8 +587,6 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
     next_id = int(trades_df["trade_id"].max()) + 1 if not trades_df.empty else 1
 
     for item in fund_approved:
-        if slots <= 0:
-            break
         stock = item["stock"]
         qty = int(alloc_amt // item["price"])
         if qty < 1:
@@ -614,7 +608,6 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
         }
         trades_df = pd.concat([trades_df, pd.DataFrame([new_row])], ignore_index=True)
         open_stocks.add(stock)
-        slots -= 1
         next_id += 1
         funnel["bought"] += 1
         bought.append(f"[MASTER] BUY {stock} ({strat_label} | {item['f_tag']}) @ {item['price']:.2f}")
@@ -622,7 +615,9 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
     return trades_df, bought, funnel
 
 
-def calc_stats(df, capital):
+def calc_stats(df):
+    if df.empty:
+        return 0, 0, 0, 0, 0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0
     closed = df[df["status"] == "CLOSED"]
     opened = df[df["status"] == "OPEN"]
     wins = len(closed[closed["pnl"] > 0])
@@ -631,45 +626,45 @@ def calc_stats(df, capital):
     r_pnl = float(closed["pnl"].sum()) if len(closed) > 0 else 0.0
     u_pnl = float(opened["pnl"].sum()) if len(opened) > 0 else 0.0
     tot = r_pnl + u_pnl
-    ret = (tot / capital) * 100
-    return len(df), len(opened), len(closed), wins, losses, wr, r_pnl, u_pnl, tot, ret
+    deployed = float((df["buy_price"] * df["qty"]).sum())
+    roi_pct = (tot / deployed * 100) if deployed > 0 else 0.0
+    return len(df), len(opened), len(closed), wins, losses, wr, deployed, r_pnl, u_pnl, tot, roi_pct
 
 
 def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candidates, funnel):
     raw_counts = " | ".join([f"{s.split('_')[0]}: {len(candidates[s])}" for s in STRATEGIES])
     lines = [
-        "# Dual-Mode All-NSE Paper Trading Report (v2)",
+        "# Dual-Mode All-NSE Paper Trading Report (v3 - Unlimited Slots)",
         f"**Last Updated (IST):** {ts_str} | **Stocks Scanned:** {total_scanned} NSE Equities",
         f"**Market Regime (Nifty 50 EMA + 18M ROC):** `{regime_msg}`",
         f"**Today's Signal Funnel:** Raw Signals ({raw_counts}) -> Master Clean: {funnel['clean_passed']} -> Fundamental Passed: {funnel['fund_passed']} -> Master Bought: {funnel['bought']}\n",
         "---",
-        "## MODE 1: Individual 4 Strategies (Pure Technical Lab - Rs. 1,00,000 Each)",
-        "| Strategy | Total | Open | Closed | Wins | Losses | Win Rate | Realized (Rs.) | Unrealized (Rs.) | Return % |",
-        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
+        "## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)",
+        "| Strategy | Total | Open | Closed | Wins | Losses | Win Rate | Deployed (Rs.) | Realized (Rs.) | Unrealized (Rs.) | Net ROI % |",
+        "| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |"
     ]
 
-    ind_tot_pnl = 0.0
     for strat in STRATEGIES:
         sdf = ind_df[ind_df["strategy"] == strat]
-        t, o, c, w, l, wr, rp, up, tot, ret = calc_stats(sdf, IND_CAPITAL_PER_STRAT)
-        ind_tot_pnl += tot
+        t, o, c, w, l, wr, dep, rp, up, tot, roi = calc_stats(sdf)
         lines.append(
-            f"| **{strat}** | {t} | {o} | {c} | {w} | {l} | {wr:.1f}% | {rp:+,.0f} | {up:+,.0f} | **{ret:+.2f}%** |"
+            f"| **{strat}** | {t} | {o} | {c} | {w} | {l} | {wr:.1f}% | {dep:,.0f} | {rp:+,.0f} | {up:+,.0f} | **{roi:+.2f}%** |"
         )
 
-    ind_ret = (ind_tot_pnl / (IND_CAPITAL_PER_STRAT * 4)) * 100
-    lines.append(f"\n**Mode 1 Total (Rs. 4,00,000):** Rs. {ind_tot_pnl:+,.0f} (**{ind_ret:+.2f}%**)\n")
+    it, io_, ic, iw, il, iwr, idep, irp, iup, itot, iroi = calc_stats(ind_df)
+    lines.append(f"\n**Mode 1 Total:** Deployed Rs. {idep:,.0f} | Net P&L: Rs. {itot:+,.0f} (**{iroi:+.2f}% ROI**)\n")
 
     lines.append("---")
-    lines.append("## MODE 2: Master Smart Bot (Fundamentals + ROC Throttle + No Duplicates - Rs. 4,00,000)")
-    lines.append("| Portfolio | Total | Open | Closed | Wins | Losses | Win Rate | Realized (Rs.) | Unrealized (Rs.) | Return % |")
-    lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
+    lines.append("## MODE 2: Master Smart Bot (Unlimited Slots + Strict Fundamentals + No Duplicates)")
+    lines.append("| Portfolio | Total | Open | Closed | Wins | Losses | Win Rate | Deployed (Rs.) | Realized (Rs.) | Unrealized (Rs.) | Net ROI % |")
+    lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
 
-    mt, mo, mc, mw, ml, mwr, mrp, mup, mtot, mret = calc_stats(master_df, MASTER_TOTAL_CAPITAL)
+    mt, mo, mc, mw, ml, mwr, mdep, mrp, mup, mtot, mroi = calc_stats(master_df)
     lines.append(
-        f"| **MASTER SMART BOT** | {mt} | {mo} | {mc} | {mw} | {ml} | {mwr:.1f}% | {mrp:+,.0f} | {mup:+,.0f} | **{mret:+.2f}%** |\n"
+        f"| **MASTER SMART BOT** | {mt} | {mo} | {mc} | {mw} | {ml} | {mwr:.1f}% | {mdep:,.0f} | {mrp:+,.0f} | {mup:+,.0f} | **{mroi:+.2f}%** |\n"
     )
 
+    # Mode 2 Open Positions
     lines.append("### Mode 2 Active Positions (Master Bot)\n")
     m_open = master_df[master_df["status"] == "OPEN"]
     if m_open.empty:
@@ -682,6 +677,20 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
                 f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['notes']} | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
             )
 
+    # Mode 2 Closed Trades
+    m_closed = master_df[master_df["status"] == "CLOSED"].tail(30)
+    lines.append("\n### Mode 2 Closed Trades (Latest 30)\n")
+    if m_closed.empty:
+        lines.append("_No closed Master trades yet._\n")
+    else:
+        lines.append("| Buy Date | Sell Date | Trigger | Stock | Buy | Sell | Reason | Net P&L |")
+        lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :--- | :---: |")
+        for _, r in m_closed.iterrows():
+            lines.append(
+                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+            )
+
+    # Mode 1 Open Positions
     lines.append("\n### Mode 1 Active Positions (Individual Lab)\n")
     i_open = ind_df[ind_df["status"] == "OPEN"]
     if i_open.empty:
@@ -694,19 +703,32 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
                 f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
             )
 
+    # Mode 1 Closed Trades
+    i_closed = ind_df[ind_df["status"] == "CLOSED"].tail(30)
+    lines.append("\n### Mode 1 Closed Trades (Latest 30)\n")
+    if i_closed.empty:
+        lines.append("_No closed Individual trades yet._\n")
+    else:
+        lines.append("| Buy Date | Sell Date | Strategy | Stock | Buy | Sell | Reason | Net P&L |")
+        lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :--- | :---: |")
+        for _, r in i_closed.iterrows():
+            lines.append(
+                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+            )
+
     with open(REPORT_FILE, "w", encoding="utf-8") as f:
         f.write("\n".join(lines))
 
-    return ind_ret, mret
+    return iroi, mroi
 
 
 def main():
     ist_now = get_ist_now()
     today_str = ist_now.strftime("%Y-%m-%d")
     ts_str = ist_now.strftime("%Y-%m-%d %H:%M IST")
-    print(f"=== Dual-Mode NSE Paper Bot v2 ({ts_str}) ===")
+    print(f"=== Dual-Mode NSE Paper Bot v3 - Unlimited ({ts_str}) ===")
 
-    allow_buys, alloc_amt, max_slots, regime_msg = check_market_regime()
+    allow_buys, alloc_amt, regime_msg = check_market_regime()
     print(f"Market Regime: {regime_msg}")
 
     tickers = get_all_nse_tickers()
@@ -723,21 +745,21 @@ def main():
 
     ind_df, ind_bought = execute_mode1_individual(ind_df, candidates, today_str)
     master_df, master_bought, funnel = execute_mode2_master(
-        master_df, candidates, today_str, allow_buys, alloc_amt, max_slots
+        master_df, candidates, today_str, allow_buys, alloc_amt
     )
 
     ind_df.to_csv(IND_FILE, index=False)
     master_df.to_csv(MASTER_FILE, index=False)
-    ind_ret, master_ret = generate_report(
+    ind_roi, master_roi = generate_report(
         ind_df, master_df, ts_str, len(market_data), regime_msg, candidates, funnel
     )
 
     summary = (
-        f"NSE Bot v2 ({ts_str})\n"
+        f"NSE Bot v3 Unlimited ({ts_str})\n"
         f"Regime: {regime_msg}\n"
         f"Funnel: Raw {funnel['raw_unique']} -> Fund OK {funnel['fund_passed']}\n"
-        f"Mode 1: {ind_ret:+.2f}% (B:{len(ind_bought)} S:{len(ind_closed)})\n"
-        f"Mode 2: {master_ret:+.2f}% (B:{len(master_bought)} S:{len(master_closed)})\n\n"
+        f"Mode 1 ROI: {ind_roi:+.2f}% (B:{len(ind_bought)} S:{len(ind_closed)})\n"
+        f"Mode 2 ROI: {master_roi:+.2f}% (B:{len(master_bought)} S:{len(master_closed)})\n\n"
         + "\n".join(master_bought + master_closed + ind_bought + ind_closed)
     )
     print(summary)
