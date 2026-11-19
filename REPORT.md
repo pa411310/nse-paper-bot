@@ -1,5 +1,5 @@
 # Dual-Mode All-NSE Paper Trading Report (v2)
-**Last Updated (IST):** 2026-11-19 16:03 IST | **Stocks Scanned:** 2053 NSE Equities
+**Last Updated (IST):** 2026-11-19 16:43 IST | **Stocks Scanned:** 2053 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 3.1%)`
 **Today's Signal Funnel:** Raw Signals (S1: 5 | S2: 2 | S3: 13 | S4: 67) -> Master Clean: 68 -> Fundamental Passed: 0 -> Master Bought: 0
 
