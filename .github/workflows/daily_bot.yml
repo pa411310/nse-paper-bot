@@ -1,0 +1,46 @@
+name: Dual-Mode All-NSE Paper Trading Bot
+
+on:
+  schedule:
+    # 10:30 AM IST (Morning Live Scan)
+    - cron: '0 5 * * 1-5'
+    # 1:00 PM IST (Mid-Day Live Scan)
+    - cron: '30 7 * * 1-5'
+    # 3:15 PM IST (Main Live Buy/Sell before Close)
+    - cron: '45 9 * * 1-5'
+    # 3:45 PM IST (Final Closing Report)
+    - cron: '15 10 * * 1-5'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  run-trading-bot:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run Dual-Mode Bot
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python bot.py
+
+      - name: Save Both Mode Logs & Report
+        run: |
+          git config --local user.email "bot@github.com"
+          git config --local user.name "NSE Paper Bot"
+          git add trades_individual.csv trades_master.csv REPORT.md
+          [ -f nse_stocks.csv ] && git add nse_stocks.csv || true
+          git diff --quiet && git diff --staged --quiet || git commit -m "Dual-mode update: $(date +'%Y-%m-%d %H:%M')"
+          git push
