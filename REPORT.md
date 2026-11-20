@@ -1,7 +1,7 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-20 16:06 IST | **Stocks Scanned:** 2054 NSE Equities
+**Last Updated (IST):** 2026-11-20 16:44 IST | **Stocks Scanned:** 2054 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 4.2%)`
-**Today's Signal Funnel:** Raw Signals (S1: 8 | S2: 2 | S3: 11 | S4: 15) -> Master Clean: 12 -> Fundamental Passed: 7 -> Master Bought: 7
+**Today's Signal Funnel:** Raw Signals (S1: 8 | S2: 2 | S3: 11 | S4: 15) -> Master Clean: 5 -> Fundamental Passed: 0 -> Master Bought: 0
 
 ---
 ## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)
@@ -51,10 +51,10 @@
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **BAJAJ-AUTO.NS** | MC:296293Cr | 10784.0 | 10765.0 | 10618.74 | 11279.78 | -76 (-0.2%) |
 | 2026-11-20 | CONFLUENCE:S1+S4 | **BAJAJHLDNG.NS** | MC:129868Cr,PE:14,Inst:13% | 11669.0 | 11669.0 | 11083.05 | 13426.85 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **KPRMILL.NS** | MC:40804Cr,PE:39,ROE:18%,DE:0.05,Inst:23% | 1191.3 | 1191.3 | 1158.3 | 1290.3 | +0 (+0.0%) |
-| 2026-11-20 | S1_Master_Breakout_VCP | **ADANIPOWER.NS** | MC:408739Cr,PE:22,ROE:27%,Inst:19% | 211.95 | 211.95 | 201.15 | 233.55 | +0 (+0.0%) |
+| 2026-11-20 | S1_Master_Breakout_VCP | **ADANIPOWER.NS** | MC:408739Cr,PE:22,ROE:27%,Inst:19% | 211.95 | 211.95 | 201.15 | 233.55 | -0 (-0.0%) |
 | 2026-11-20 | S1_Master_Breakout_VCP | **ULTRACEMCO.NS** | MC:380490Cr,PE:44,DE:0.38,Inst:23% | 12939.0 | 12939.0 | 12408.5 | 14000.0 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRANULES.NS** | MC:22440Cr,PE:29,DE:0.17,Inst:23% | 822.65 | 822.65 | 787.74 | 927.37 | +0 (+0.0%) |
-| 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRASIM.NS** | MC:210520Cr,PE:44,Inst:22% | 3103.7 | 3103.7 | 3028.41 | 3329.57 | +0 (+0.0%) |
+| 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRASIM.NS** | MC:210520Cr,PE:44,Inst:22% | 3103.7 | 3103.7 | 3028.41 | 3329.57 | -0 (-0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **METROPOLIS.NS** | MC:11746Cr,DE:0.16,Inst:45% | 566.0 | 566.0 | 553.11 | 604.66 | +0 (+0.0%) |
 
 ### Mode 2 Closed Trades (Latest 30)
@@ -112,15 +112,15 @@
 | 2026-11-20 | S3_Channel_Support_Swing | **SMCGLOBAL.NS** | 86.2 | 85.58 | 81.09 | 102.19 | -144 (-0.7%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **LGEINDIA.NS** | 1761.2 | 1740.7 | 1688.94 | 1977.98 | -226 (-1.2%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **BAJAJ-AUTO.NS** | 10784.0 | 10765.0 | 10618.74 | 11279.78 | -19 (-0.2%) |
-| 2026-11-20 | S1_Master_Breakout_VCP | **KIMS.NS** | 795.6 | 795.6 | 749.94 | 886.93 | +0 (+0.0%) |
+| 2026-11-20 | S1_Master_Breakout_VCP | **KIMS.NS** | 795.6 | 795.6 | 749.94 | 886.93 | -0 (-0.0%) |
 | 2026-11-20 | S1_Master_Breakout_VCP | **ULTRACEMCO.NS** | 12939.0 | 12939.0 | 12408.5 | 14000.0 | +0 (+0.0%) |
-| 2026-11-20 | S1_Master_Breakout_VCP | **ADANIPOWER.NS** | 211.95 | 211.95 | 201.15 | 233.55 | +0 (+0.0%) |
+| 2026-11-20 | S1_Master_Breakout_VCP | **ADANIPOWER.NS** | 211.95 | 211.95 | 201.15 | 233.55 | -0 (-0.0%) |
 | 2026-11-20 | S1_Master_Breakout_VCP | **BAJAJHLDNG.NS** | 11669.0 | 11669.0 | 11040.33 | 12926.35 | +0 (+0.0%) |
 | 2026-11-20 | S2_MACD_200EMA_Bounce | **APARINDS.NS** | 14339.0 | 14339.0 | 14016.13 | 14823.3 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **NUVOCO.NS** | 358.5 | 358.5 | 344.12 | 401.63 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **KPRMILL.NS** | 1191.3 | 1191.3 | 1158.3 | 1290.3 | +0 (+0.0%) |
-| 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRASIM.NS** | 3103.7 | 3103.7 | 3028.41 | 3329.57 | +0 (+0.0%) |
-| 2026-11-20 | S4_20EMA_Momentum_Pullback | **REGAAL.NS** | 98.74 | 98.74 | 92.82 | 116.51 | +0 (+0.0%) |
+| 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRASIM.NS** | 3103.7 | 3103.7 | 3028.41 | 3329.57 | -0 (-0.0%) |
+| 2026-11-20 | S4_20EMA_Momentum_Pullback | **REGAAL.NS** | 98.74 | 98.74 | 92.82 | 116.51 | -0 (-0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **BAJAJHLDNG.NS** | 11669.0 | 11669.0 | 11083.05 | 13426.85 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **GRANULES.NS** | 822.65 | 822.65 | 787.74 | 927.37 | +0 (+0.0%) |
 | 2026-11-20 | S4_20EMA_Momentum_Pullback | **METROPOLIS.NS** | 566.0 | 566.0 | 553.11 | 604.66 | +0 (+0.0%) |
