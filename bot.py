@@ -145,7 +145,6 @@ def check_fundamentals_smart(stock):
             except Exception:
                 mcap = None
 
-        # Strict MCap gate: must confirm >= Rs. 1,500 Cr
         if mcap is None:
             return False, 0.0, "NoMCapData"
         if mcap < MIN_MCAP_INR:
@@ -194,13 +193,33 @@ def load_trades(filepath):
         "qty", "stop_loss", "target", "sell_date", "sell_price",
         "exit_reason", "last_price", "pnl", "pnl_pct", "notes"
     ]
+    str_cols = ["strategy", "stock", "status", "buy_date", "sell_date", "exit_reason", "notes"]
+    float_cols = ["buy_price", "stop_loss", "target", "sell_price", "last_price", "pnl", "pnl_pct"]
+
     if os.path.exists(filepath):
-        df = pd.read_csv(filepath)
+        df = pd.read_csv(filepath, dtype={c: object for c in str_cols})
         for c in cols:
             if c not in df.columns:
-                df[c] = "" if c == "notes" else np.nan
+                df[c] = "" if c in str_cols else np.nan
+        for c in str_cols:
+            df[c] = df[c].astype(object).fillna("")
+        for c in float_cols:
+            df[c] = pd.to_numeric(df[c], errors="coerce").astype(float)
         return df[cols]
-    return pd.DataFrame(columns=cols)
+
+    df = pd.DataFrame(columns=cols)
+    for c in str_cols:
+        df[c] = df[c].astype(object)
+    for c in float_cols:
+        df[c] = df[c].astype(float)
+    return df
+
+
+def append_trade(trades_df, new_row):
+    row_df = pd.DataFrame([new_row])
+    if trades_df.empty:
+        return row_df
+    return pd.concat([trades_df, row_df], ignore_index=True)
 
 
 def compute_indicators(df):
@@ -485,8 +504,8 @@ def get_blocked_stocks(trades_df, today_str, cooldown_days, strategy_filter=None
         df = df[df["strategy"] == strategy_filter]
 
     for _, r in df.iterrows():
-        s_date = str(r["sell_date"])
-        if not s_date or s_date == "nan":
+        s_date = str(r["sell_date"]).strip()
+        if not s_date or s_date.lower() == "nan":
             continue
         diff = (today_dt - datetime.strptime(s_date, "%Y-%m-%d")).days
         if diff == 0 or (r["exit_reason"] == "SL_HIT" and diff <= cooldown_days):
@@ -522,7 +541,7 @@ def execute_mode1_individual(trades_df, candidates, today_str):
                 "last_price": round(item["price"], 2), "pnl": 0.0, "pnl_pct": 0.0,
                 "notes": "TechPure"
             }
-            trades_df = pd.concat([trades_df, pd.DataFrame([new_row])], ignore_index=True)
+            trades_df = append_trade(trades_df, new_row)
             open_stocks.add(stock)
             next_id += 1
             bought.append(f"[IND] BUY {stock} ({strat}) @ {item['price']:.2f}")
@@ -572,7 +591,6 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
 
     eligible.sort(key=lambda x: (len(x["strategies"]), x["score"]), reverse=True)
 
-    # Check fundamentals on all eligible clean setups (capped at 60/run for GitHub runtime safety)
     fund_approved = []
     for item in eligible[:60]:
         ok, f_bonus, f_tag = check_fundamentals_smart(item["stock"])
@@ -606,7 +624,7 @@ def execute_mode2_master(trades_df, candidates, today_str, allow_buys, alloc_amt
             "last_price": round(item["price"], 2), "pnl": 0.0, "pnl_pct": 0.0,
             "notes": item["f_tag"]
         }
-        trades_df = pd.concat([trades_df, pd.DataFrame([new_row])], ignore_index=True)
+        trades_df = append_trade(trades_df, new_row)
         open_stocks.add(stock)
         next_id += 1
         funnel["bought"] += 1
@@ -634,7 +652,7 @@ def calc_stats(df):
 def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candidates, funnel):
     raw_counts = " | ".join([f"{s.split('_')[0]}: {len(candidates[s])}" for s in STRATEGIES])
     lines = [
-        "# Dual-Mode All-NSE Paper Trading Report (v3 - Unlimited Slots)",
+        "# Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)",
         f"**Last Updated (IST):** {ts_str} | **Stocks Scanned:** {total_scanned} NSE Equities",
         f"**Market Regime (Nifty 50 EMA + 18M ROC):** `{regime_msg}`",
         f"**Today's Signal Funnel:** Raw Signals ({raw_counts}) -> Master Clean: {funnel['clean_passed']} -> Fundamental Passed: {funnel['fund_passed']} -> Master Bought: {funnel['bought']}\n",
@@ -664,7 +682,6 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
         f"| **MASTER SMART BOT** | {mt} | {mo} | {mc} | {mw} | {ml} | {mwr:.1f}% | {mdep:,.0f} | {mrp:+,.0f} | {mup:+,.0f} | **{mroi:+.2f}%** |\n"
     )
 
-    # Mode 2 Open Positions
     lines.append("### Mode 2 Active Positions (Master Bot)\n")
     m_open = master_df[master_df["status"] == "OPEN"]
     if m_open.empty:
@@ -674,10 +691,9 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
         lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: |")
         for _, r in m_open.iterrows():
             lines.append(
-                f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['notes']} | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+                f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['notes']} | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {float(r['pnl']):+.0f} ({float(r['pnl_pct']):+.1f}%) |"
             )
 
-    # Mode 2 Closed Trades
     m_closed = master_df[master_df["status"] == "CLOSED"].tail(30)
     lines.append("\n### Mode 2 Closed Trades (Latest 30)\n")
     if m_closed.empty:
@@ -687,10 +703,9 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
         lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :--- | :---: |")
         for _, r in m_closed.iterrows():
             lines.append(
-                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {float(r['pnl']):+.0f} ({float(r['pnl_pct']):+.1f}%) |"
             )
 
-    # Mode 1 Open Positions
     lines.append("\n### Mode 1 Active Positions (Individual Lab)\n")
     i_open = ind_df[ind_df["status"] == "OPEN"]
     if i_open.empty:
@@ -700,10 +715,9 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
         lines.append("| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :---: |")
         for _, r in i_open.iterrows():
             lines.append(
-                f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+                f"| {r['buy_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['last_price']} | {r['stop_loss']} | {r['target']} | {float(r['pnl']):+.0f} ({float(r['pnl_pct']):+.1f}%) |"
             )
 
-    # Mode 1 Closed Trades
     i_closed = ind_df[ind_df["status"] == "CLOSED"].tail(30)
     lines.append("\n### Mode 1 Closed Trades (Latest 30)\n")
     if i_closed.empty:
@@ -713,7 +727,7 @@ def generate_report(ind_df, master_df, ts_str, total_scanned, regime_msg, candid
         lines.append("| :--- | :--- | :--- | :--- | :---: | :---: | :--- | :---: |")
         for _, r in i_closed.iterrows():
             lines.append(
-                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {r['pnl']:+.0f} ({r['pnl_pct']:+.1f}%) |"
+                f"| {r['buy_date']} | {r['sell_date']} | {r['strategy']} | **{r['stock']}** | {r['buy_price']} | {r['sell_price']} | {r['exit_reason']} | {float(r['pnl']):+.0f} ({float(r['pnl_pct']):+.1f}%) |"
             )
 
     with open(REPORT_FILE, "w", encoding="utf-8") as f:
@@ -726,7 +740,7 @@ def main():
     ist_now = get_ist_now()
     today_str = ist_now.strftime("%Y-%m-%d")
     ts_str = ist_now.strftime("%Y-%m-%d %H:%M IST")
-    print(f"=== Dual-Mode NSE Paper Bot v3 - Unlimited ({ts_str}) ===")
+    print(f"=== Dual-Mode NSE Paper Bot v3.1 - Unlimited ({ts_str}) ===")
 
     allow_buys, alloc_amt, regime_msg = check_market_regime()
     print(f"Market Regime: {regime_msg}")
@@ -755,7 +769,7 @@ def main():
     )
 
     summary = (
-        f"NSE Bot v3 Unlimited ({ts_str})\n"
+        f"NSE Bot v3.1 Unlimited ({ts_str})\n"
         f"Regime: {regime_msg}\n"
         f"Funnel: Raw {funnel['raw_unique']} -> Fund OK {funnel['fund_passed']}\n"
         f"Mode 1 ROI: {ind_roi:+.2f}% (B:{len(ind_bought)} S:{len(ind_closed)})\n"
