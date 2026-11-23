@@ -75,5 +75,5 @@ trade_id,strategy,stock,status,buy_date,buy_price,qty,stop_loss,target,sell_date
 74,S4_20EMA_Momentum_Pullback,JSWINFRA.NS,OPEN,2026-11-23,353.05,56,333.38,412.05,,,,353.55,28.0,0.14,TechPure
 75,S4_20EMA_Momentum_Pullback,TORNTPHARM.NS,OPEN,2026-11-23,4802.0,4,4651.81,5252.56,,,,4763.7,-153.2,-0.8,TechPure
 76,S1_Master_Breakout_VCP,PERSISTENT.NS,OPEN,2026-11-23,6282.5,3,5933.73,6980.04,,,,6282.5,0.0,0.0,TechPure
-77,S4_20EMA_Momentum_Pullback,COHANCE.NS,OPEN,2026-11-23,474.8,42,450.99,546.22,,,,474.8,0.0,0.0,TechPure
-78,S4_20EMA_Momentum_Pullback,HATSUN.NS,OPEN,2026-11-23,1069.35,18,1036.08,1169.15,,,,1069.35,0.0,0.0,TechPure
+77,S4_20EMA_Momentum_Pullback,COHANCE.NS,OPEN,2026-11-23,474.8,42,450.99,546.22,,,,474.8,-0.0,-0.0,TechPure
+78,S4_20EMA_Momentum_Pullback,HATSUN.NS,OPEN,2026-11-23,1069.35,18,1036.08,1169.15,,,,1069.35,-0.0,-0.0,TechPure

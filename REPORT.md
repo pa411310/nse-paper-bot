@@ -1,5 +1,5 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-23 16:11 IST | **Stocks Scanned:** 2059 NSE Equities
+**Last Updated (IST):** 2026-11-23 16:48 IST | **Stocks Scanned:** 2059 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 2.4%)`
 **Today's Signal Funnel:** Raw Signals (S1: 4 | S2: 0 | S3: 6 | S4: 9) -> Master Clean: 8 -> Fundamental Passed: 0 -> Master Bought: 0
 
@@ -148,8 +148,8 @@
 | 2026-11-23 | S4_20EMA_Momentum_Pullback | **JSWINFRA.NS** | 353.05 | 353.55 | 333.38 | 412.05 | +28 (+0.1%) |
 | 2026-11-23 | S4_20EMA_Momentum_Pullback | **TORNTPHARM.NS** | 4802.0 | 4763.7 | 4651.81 | 5252.56 | -153 (-0.8%) |
 | 2026-11-23 | S1_Master_Breakout_VCP | **PERSISTENT.NS** | 6282.5 | 6282.5 | 5933.73 | 6980.04 | +0 (+0.0%) |
-| 2026-11-23 | S4_20EMA_Momentum_Pullback | **COHANCE.NS** | 474.8 | 474.8 | 450.99 | 546.22 | +0 (+0.0%) |
-| 2026-11-23 | S4_20EMA_Momentum_Pullback | **HATSUN.NS** | 1069.35 | 1069.35 | 1036.08 | 1169.15 | +0 (+0.0%) |
+| 2026-11-23 | S4_20EMA_Momentum_Pullback | **COHANCE.NS** | 474.8 | 474.8 | 450.99 | 546.22 | -0 (-0.0%) |
+| 2026-11-23 | S4_20EMA_Momentum_Pullback | **HATSUN.NS** | 1069.35 | 1069.35 | 1036.08 | 1169.15 | -0 (-0.0%) |
 
 ### Mode 1 Closed Trades (Latest 30)
 
