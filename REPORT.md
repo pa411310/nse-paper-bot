@@ -1,7 +1,7 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-24 11:25 IST | **Stocks Scanned:** 2059 NSE Equities
+**Last Updated (IST):** 2026-11-24 14:10 IST | **Stocks Scanned:** 2059 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 2.4%)`
-**Today's Signal Funnel:** Raw Signals (S1: 8 | S2: 1 | S3: 9 | S4: 12) -> Master Clean: 8 -> Fundamental Passed: 0 -> Master Bought: 0
+**Today's Signal Funnel:** Raw Signals (S1: 8 | S2: 1 | S3: 9 | S4: 12) -> Master Clean: 8 -> Fundamental Passed: 5 -> Master Bought: 5
 
 ---
 ## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)
@@ -18,7 +18,7 @@
 ## MODE 2: Master Smart Bot (Unlimited Slots + Strict Fundamentals + No Duplicates)
 | Portfolio | Total | Open | Closed | Wins | Losses | Win Rate | Deployed (Rs.) | Realized (Rs.) | Unrealized (Rs.) | Net ROI % |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **MASTER SMART BOT** | 42 | 37 | 5 | 0 | 5 | 0.0% | 2,045,518 | -12,188 | -513 | **-0.62%** |
+| **MASTER SMART BOT** | 47 | 42 | 5 | 0 | 5 | 0.0% | 2,291,480 | -12,188 | -513 | **-0.55%** |
 
 ### Mode 2 Active Positions (Master Bot)
 
@@ -61,6 +61,11 @@
 | 2026-11-23 | S1_Master_Breakout_VCP | **PRIVISCL.NS** | MC:14216Cr,PE:37,ROE:26%,DE:0.62 | 3639.4 | 3617.1 | 3388.85 | 4140.49 | -290 (-0.6%) |
 | 2026-11-23 | S3_Channel_Support_Swing | **SHRIPISTON.NS** | MC:19801Cr,PE:33,ROE:17%,DE:0.31,Inst:17% | 4262.2 | 4222.0 | 4086.6 | 4495.0 | -442 (-0.9%) |
 | 2026-11-23 | S3_Channel_Support_Swing | **NRBBEARING.NS** | MC:4127Cr,PE:29,DE:0.20,Inst:26% | 426.1 | 427.45 | 408.66 | 480.73 | +158 (+0.3%) |
+| 2026-11-24 | S1_Master_Breakout_VCP | **KIMS.NS** | MC:33354Cr | 795.6 | 795.6 | 749.94 | 886.93 | +0 (+0.0%) |
+| 2026-11-24 | S3_Channel_Support_Swing | **PANAMAPET.NS** | MC:2492Cr | 412.1 | 412.1 | 396.9 | 508.86 | +0 (+0.0%) |
+| 2026-11-24 | S4_20EMA_Momentum_Pullback | **TORNTPHARM.NS** | MC:181195Cr | 4763.7 | 4763.7 | 4651.81 | 5099.37 | +0 (+0.0%) |
+| 2026-11-24 | S3_Channel_Support_Swing | **HBLENGINE.NS** | MC:21344Cr | 770.0 | 770.0 | 723.14 | 856.35 | +0 (+0.0%) |
+| 2026-11-24 | S4_20EMA_Momentum_Pullback | **COHANCE.NS** | MC:18166Cr | 474.8 | 474.8 | 450.99 | 546.22 | +0 (+0.0%) |
 
 ### Mode 2 Closed Trades (Latest 30)
 
