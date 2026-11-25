@@ -1,7 +1,7 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-25 16:08 IST | **Stocks Scanned:** 2060 NSE Equities
+**Last Updated (IST):** 2026-11-25 16:42 IST | **Stocks Scanned:** 2060 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 4.3%)`
-**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 2 | S3: 8 | S4: 12) -> Master Clean: 12 -> Fundamental Passed: 9 -> Master Bought: 9
+**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 2 | S3: 8 | S4: 12) -> Master Clean: 3 -> Fundamental Passed: 0 -> Master Bought: 0
 
 ---
 ## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)
@@ -73,13 +73,13 @@
 | 2026-11-25 | S3_Channel_Support_Swing | **ONEPOINT.NS** | MC:1811Cr,PE:34,DE:0.55 | 68.9 | 68.0 | 66.02 | 77.43 | -652 (-1.3%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **POLYPLEX.NS** | MC:3147Cr,PE:20,DE:0.16 | 1002.65 | 1000.4 | 955.35 | 1144.55 | -110 (-0.2%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **KAJARIACER.NS** | MC:18951Cr | 1206.0 | 1206.0 | 1160.78 | 1341.67 | +0 (+0.0%) |
-| 2026-11-25 | S3_Channel_Support_Swing | **AZAD.NS** | MC:15213Cr | 2355.7 | 2355.7 | 2209.02 | 2637.36 | +0 (+0.0%) |
+| 2026-11-25 | S3_Channel_Support_Swing | **AZAD.NS** | MC:15213Cr | 2355.7 | 2355.7 | 2209.02 | 2637.36 | -0 (-0.0%) |
 | 2026-11-25 | S3_Channel_Support_Swing | **RBA.NS** | MC:6276Cr | 88.12 | 88.12 | 83.79 | 99.99 | +0 (+0.0%) |
 | 2026-11-25 | S3_Channel_Support_Swing | **SEAMECLTD.NS** | MC:3762Cr | 1474.5 | 1474.5 | 1389.84 | 1639.44 | +0 (+0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **ARFIN.NS** | MC:1601Cr | 94.93 | 94.93 | 89.96 | 109.84 | +0 (+0.0%) |
-| 2026-11-25 | S4_20EMA_Momentum_Pullback | **EPL.NS** | MC:7569Cr | 235.9 | 235.9 | 226.36 | 264.51 | +0 (+0.0%) |
+| 2026-11-25 | S4_20EMA_Momentum_Pullback | **EPL.NS** | MC:7569Cr | 235.9 | 235.9 | 226.36 | 264.51 | -0 (-0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **DRREDDY.NS** | MC:116546Cr | 1398.0 | 1398.0 | 1361.05 | 1508.84 | +0 (+0.0%) |
-| 2026-11-25 | S4_20EMA_Momentum_Pullback | **ETHOSLTD.NS** | MC:7370Cr | 2754.4 | 2754.4 | 2625.97 | 3139.67 | +0 (+0.0%) |
+| 2026-11-25 | S4_20EMA_Momentum_Pullback | **ETHOSLTD.NS** | MC:7370Cr | 2754.4 | 2754.4 | 2625.97 | 3139.67 | -0 (-0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **HAL.NS** | MC:330107Cr | 4936.0 | 4936.0 | 4743.78 | 5512.65 | +0 (+0.0%) |
 
 ### Mode 2 Closed Trades (Latest 30)
@@ -182,9 +182,9 @@
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **KAJARIACER.NS** | 1206.0 | 1206.0 | 1160.78 | 1341.67 | +0 (+0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **AAREYDRUGS.NS** | 112.16 | 112.16 | 105.43 | 132.35 | +0 (+0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **ARFIN.NS** | 94.93 | 94.93 | 89.96 | 109.84 | +0 (+0.0%) |
-| 2026-11-25 | S4_20EMA_Momentum_Pullback | **EPL.NS** | 235.9 | 235.9 | 226.36 | 264.51 | +0 (+0.0%) |
+| 2026-11-25 | S4_20EMA_Momentum_Pullback | **EPL.NS** | 235.9 | 235.9 | 226.36 | 264.51 | -0 (-0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **DRREDDY.NS** | 1398.0 | 1398.0 | 1361.05 | 1508.84 | +0 (+0.0%) |
-| 2026-11-25 | S4_20EMA_Momentum_Pullback | **ETHOSLTD.NS** | 2754.4 | 2754.4 | 2625.97 | 3139.67 | +0 (+0.0%) |
+| 2026-11-25 | S4_20EMA_Momentum_Pullback | **ETHOSLTD.NS** | 2754.4 | 2754.4 | 2625.97 | 3139.67 | -0 (-0.0%) |
 | 2026-11-25 | S4_20EMA_Momentum_Pullback | **HAL.NS** | 4936.0 | 4936.0 | 4743.78 | 5512.65 | +0 (+0.0%) |
 
 ### Mode 1 Closed Trades (Latest 30)
