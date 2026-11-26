@@ -1,7 +1,7 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-26 16:08 IST | **Stocks Scanned:** 2059 NSE Equities
+**Last Updated (IST):** 2026-11-26 16:40 IST | **Stocks Scanned:** 2059 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 4.6%)`
-**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 4 | S3: 24 | S4: 13) -> Master Clean: 14 -> Fundamental Passed: 11 -> Master Bought: 11
+**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 4 | S3: 24 | S4: 13) -> Master Clean: 3 -> Fundamental Passed: 0 -> Master Bought: 0
 
 ---
 ## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)
@@ -91,16 +91,16 @@
 | 2026-11-26 | S3_Channel_Support_Swing | **KPIL.NS** | MC:22466Cr,PE:19,ROE:15%,DE:0.34,Inst:49% | 1316.4 | 1314.2 | 1251.75 | 1385.9 | -81 (-0.2%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **TIPSMUSIC.NS** | MC:9746Cr,PE:43,ROE:78% | 766.85 | 777.75 | 721.28 | 826.15 | +708 (+1.4%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **INDNIPPON.NS** | MC:2578Cr,PE:22,DE:0.16 | 1139.8 | 1142.4 | 1084.17 | 1263.14 | +112 (+0.2%) |
-| 2026-11-26 | CONFLUENCE:S1+S4 | **RUBICON.NS** | MC:30652Cr | 1851.7 | 1851.7 | 1740.6 | 2185.01 | +0 (+0.0%) |
+| 2026-11-26 | CONFLUENCE:S1+S4 | **RUBICON.NS** | MC:30652Cr | 1851.7 | 1851.7 | 1740.6 | 2185.01 | -0 (-0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **PARACABLES.NS** | MC:1873Cr | 57.25 | 57.25 | 54.49 | 70.19 | +0 (+0.0%) |
-| 2026-11-26 | S1_Master_Breakout_VCP | **OBEROIRLTY.NS** | MC:69273Cr | 1905.2 | 1905.2 | 1804.6 | 2106.41 | +0 (+0.0%) |
-| 2026-11-26 | S4_20EMA_Momentum_Pullback | **WOCKPHARMA.NS** | MC:36300Cr | 2233.7 | 2233.7 | 2099.68 | 2635.77 | +0 (+0.0%) |
+| 2026-11-26 | S1_Master_Breakout_VCP | **OBEROIRLTY.NS** | MC:69273Cr | 1905.2 | 1905.2 | 1804.6 | 2106.41 | -0 (-0.0%) |
+| 2026-11-26 | S4_20EMA_Momentum_Pullback | **WOCKPHARMA.NS** | MC:36300Cr | 2233.7 | 2233.7 | 2099.68 | 2635.77 | -0 (-0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **RGL.NS** | MC:1543Cr | 143.63 | 143.63 | 131.32 | 160.38 | +0 (+0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **SOLARA.NS** | MC:2989Cr | 619.45 | 619.45 | 590.11 | 711.71 | +0 (+0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **QUADFUTURE.NS** | MC:1572Cr | 393.1 | 393.1 | 373.92 | 444.01 | +0 (+0.0%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **CRAFTSMAN.NS** | MC:31019Cr | 11860.0 | 11860.0 | 11246.4 | 13700.8 | +0 (+0.0%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **URBANCO.NS** | MC:28050Cr | 170.72 | 170.72 | 162.06 | 196.69 | +0 (+0.0%) |
-| 2026-11-26 | S4_20EMA_Momentum_Pullback | **ARVSMART.NS** | MC:2899Cr | 631.55 | 631.55 | 594.0 | 744.2 | +0 (+0.0%) |
+| 2026-11-26 | S4_20EMA_Momentum_Pullback | **ARVSMART.NS** | MC:2899Cr | 631.55 | 631.55 | 594.0 | 744.2 | -0 (-0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **CEIGALL.NS** | MC:6645Cr | 381.5 | 381.5 | 358.58 | 401.84 | +0 (+0.0%) |
 
 ### Mode 2 Closed Trades (Latest 30)
@@ -241,17 +241,17 @@
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **WOCKPHARMA.NS** | 2187.5 | 2233.7 | 2056.25 | 2581.25 | +416 (+2.1%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **RUBICON.NS** | 1831.9 | 1851.7 | 1721.99 | 2161.64 | +198 (+1.1%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **GMMPFAUDLR.NS** | 1259.9 | 1249.1 | 1184.31 | 1486.68 | -162 (-0.9%) |
-| 2026-11-26 | S1_Master_Breakout_VCP | **RUBICON.NS** | 1851.7 | 1851.7 | 1695.17 | 2164.77 | +0 (+0.0%) |
-| 2026-11-26 | S1_Master_Breakout_VCP | **OBEROIRLTY.NS** | 1905.2 | 1905.2 | 1804.6 | 2106.41 | +0 (+0.0%) |
+| 2026-11-26 | S1_Master_Breakout_VCP | **RUBICON.NS** | 1851.7 | 1851.7 | 1695.17 | 2164.77 | -0 (-0.0%) |
+| 2026-11-26 | S1_Master_Breakout_VCP | **OBEROIRLTY.NS** | 1905.2 | 1905.2 | 1804.6 | 2106.41 | -0 (-0.0%) |
 | 2026-11-26 | S2_MACD_200EMA_Bounce | **UNIPARTS.NS** | 715.2 | 715.2 | 668.57 | 785.14 | +0 (+0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **MATRIMONY.NS** | 534.95 | 534.95 | 499.8 | 649.39 | +0 (+0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **PARACABLES.NS** | 57.25 | 57.25 | 54.49 | 70.19 | +0 (+0.0%) |
 | 2026-11-26 | S3_Channel_Support_Swing | **CEIGALL.NS** | 381.5 | 381.5 | 358.58 | 401.84 | +0 (+0.0%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **SOMANYCERA.NS** | 557.4 | 557.4 | 545.69 | 592.54 | +0 (+0.0%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **CRAFTSMAN.NS** | 11860.0 | 11860.0 | 11246.4 | 13700.8 | +0 (+0.0%) |
-| 2026-11-26 | S4_20EMA_Momentum_Pullback | **SUNTV.NS** | 651.1 | 651.1 | 612.03 | 768.3 | +0 (+0.0%) |
+| 2026-11-26 | S4_20EMA_Momentum_Pullback | **SUNTV.NS** | 651.1 | 651.1 | 612.03 | 768.3 | -0 (-0.0%) |
 | 2026-11-26 | S4_20EMA_Momentum_Pullback | **URBANCO.NS** | 170.72 | 170.72 | 162.06 | 196.69 | +0 (+0.0%) |
-| 2026-11-26 | S4_20EMA_Momentum_Pullback | **ARVSMART.NS** | 631.55 | 631.55 | 594.0 | 744.2 | +0 (+0.0%) |
+| 2026-11-26 | S4_20EMA_Momentum_Pullback | **ARVSMART.NS** | 631.55 | 631.55 | 594.0 | 744.2 | -0 (-0.0%) |
 
 ### Mode 1 Closed Trades (Latest 30)
 
