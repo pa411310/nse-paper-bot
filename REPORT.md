@@ -1,7 +1,7 @@
 # Dual-Mode All-NSE Paper Trading Report (v3.1 - Unlimited Slots)
-**Last Updated (IST):** 2026-11-27 16:04 IST | **Stocks Scanned:** 2060 NSE Equities
+**Last Updated (IST):** 2026-11-27 16:37 IST | **Stocks Scanned:** 2060 NSE Equities
 **Market Regime (Nifty 50 EMA + 18M ROC):** `BOTTOM ZONE AGGRESSIVE (100% Size | 18M ROC: 3.5%)`
-**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 4 | S3: 17 | S4: 8) -> Master Clean: 14 -> Fundamental Passed: 10 -> Master Bought: 10
+**Today's Signal Funnel:** Raw Signals (S1: 3 | S2: 4 | S3: 17 | S4: 8) -> Master Clean: 4 -> Fundamental Passed: 0 -> Master Bought: 0
 
 ---
 ## MODE 1: Individual 4 Strategies (Unlimited Slots - Rs. 20,000/Trade)
@@ -109,14 +109,14 @@
 | 2026-11-27 | S3_Channel_Support_Swing | **INDORAMA.NS** | MC:1978Cr,ROE:38% | 75.8 | 76.47 | 69.82 | 82.76 | +442 (+0.9%) |
 | 2026-11-27 | S2_MACD_200EMA_Bounce | **GARFIBRES.NS** | MC:7176Cr | 734.95 | 734.95 | 720.29 | 756.95 | +0 (+0.0%) |
 | 2026-11-27 | CONFLUENCE:S1+S4 | **ACMESOLAR.NS** | MC:30099Cr | 426.35 | 426.35 | 411.44 | 486.05 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **DATAPATTNS.NS** | MC:24279Cr | 4336.9 | 4336.9 | 4138.0 | 4933.59 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **MANAKCOAT.NS** | MC:1965Cr | 165.68 | 165.68 | 155.74 | 195.5 | +0 (+0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **DATAPATTNS.NS** | MC:24279Cr | 4336.9 | 4336.9 | 4138.0 | 4933.59 | -0 (-0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **MANAKCOAT.NS** | MC:1965Cr | 165.68 | 165.68 | 155.74 | 195.5 | -0 (-0.0%) |
 | 2026-11-27 | S4_20EMA_Momentum_Pullback | **SOLARINDS.NS** | MC:176003Cr | 19450.0 | 19450.0 | 18283.0 | 22951.0 | +0 (+0.0%) |
 | 2026-11-27 | S1_Master_Breakout_VCP | **BALRAMCHIN.NS** | MC:14295Cr | 675.45 | 675.45 | 625.66 | 775.04 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **SPAL.NS** | MC:2317Cr | 921.85 | 921.85 | 898.03 | 993.31 | +0 (+0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **SPAL.NS** | MC:2317Cr | 921.85 | 921.85 | 898.03 | 993.31 | -0 (-0.0%) |
 | 2026-11-27 | S3_Channel_Support_Swing | **CENTUM.NS** | MC:5892Cr | 3991.5 | 3991.5 | 3734.78 | 4529.25 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **PARAS.NS** | MC:10497Cr | 1302.6 | 1302.6 | 1229.58 | 1521.66 | +0 (+0.0%) |
-| 2026-11-27 | S3_Channel_Support_Swing | **FMGOETZE.NS** | MC:2359Cr | 424.05 | 424.05 | 410.03 | 487.03 | +0 (+0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **PARAS.NS** | MC:10497Cr | 1302.6 | 1302.6 | 1229.58 | 1521.66 | -0 (-0.0%) |
+| 2026-11-27 | S3_Channel_Support_Swing | **FMGOETZE.NS** | MC:2359Cr | 424.05 | 424.05 | 410.03 | 487.03 | -0 (-0.0%) |
 
 ### Mode 2 Closed Trades (Latest 30)
 
@@ -287,11 +287,11 @@
 | 2026-11-27 | S4_20EMA_Momentum_Pullback | **ACMESOLAR.NS** | 431.05 | 426.35 | 411.44 | 489.87 | -216 (-1.1%) |
 | 2026-11-27 | S4_20EMA_Momentum_Pullback | **TITAN.NS** | 4711.9 | 4675.3 | 4618.25 | 4992.85 | -146 (-0.8%) |
 | 2026-11-27 | S1_Master_Breakout_VCP | **BALRAMCHIN.NS** | 675.45 | 675.45 | 625.66 | 775.04 | +0 (+0.0%) |
-| 2026-11-27 | S2_MACD_200EMA_Bounce | **EMKAY.NS** | 262.65 | 262.65 | 254.87 | 274.31 | +0 (+0.0%) |
+| 2026-11-27 | S2_MACD_200EMA_Bounce | **EMKAY.NS** | 262.65 | 262.65 | 254.87 | 274.31 | -0 (-0.0%) |
 | 2026-11-27 | S3_Channel_Support_Swing | **GKSL.NS** | 146.3 | 146.3 | 138.28 | 172.54 | +0 (+0.0%) |
-| 2026-11-27 | S3_Channel_Support_Swing | **FMGOETZE.NS** | 424.05 | 424.05 | 410.03 | 487.03 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **MANAKCOAT.NS** | 165.68 | 165.68 | 155.74 | 195.5 | +0 (+0.0%) |
-| 2026-11-27 | S4_20EMA_Momentum_Pullback | **SPAL.NS** | 921.85 | 921.85 | 898.03 | 993.31 | +0 (+0.0%) |
+| 2026-11-27 | S3_Channel_Support_Swing | **FMGOETZE.NS** | 424.05 | 424.05 | 410.03 | 487.03 | -0 (-0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **MANAKCOAT.NS** | 165.68 | 165.68 | 155.74 | 195.5 | -0 (-0.0%) |
+| 2026-11-27 | S4_20EMA_Momentum_Pullback | **SPAL.NS** | 921.85 | 921.85 | 898.03 | 993.31 | -0 (-0.0%) |
 
 ### Mode 1 Closed Trades (Latest 30)
 
